@@ -3,6 +3,10 @@ const fileText = document.getElementById("file-text");
 const tableBody = document.getElementById("table-body");
 const copyBtn = document.getElementById("copy-btn");
 const dropZone = document.getElementById("drop-zone");
+const loadingScreen = document.getElementById("loading-screen");
+const toast = document.getElementById("toast");
+
+let toastTimer;
 
 fileInput.addEventListener("change", function (e) {
     const file = e.target.files[0];
@@ -11,6 +15,8 @@ fileInput.addEventListener("change", function (e) {
         return;
     }
 
+    showLoading();
+
     fileText.textContent = "✓ " + file.name;
     dropZone.classList.add("success");
 
@@ -18,6 +24,10 @@ fileInput.addEventListener("change", function (e) {
 
     reader.onload = function (e) {
         processCSV(e.target.result);
+        setTimeout(() => {
+            hideLoading();
+            showToast("Orders imported successfully.");
+        }, 300);
     };
 
     reader.readAsText(file);
@@ -48,12 +58,31 @@ function shortenProductName(productName) {
     return productName;
 }
 
+function showLoading(){
+    loadingScreen.classList.add("show");
+}
+
+function hideLoading(){
+    loadingScreen.classList.remove("show");
+}
+
+function showToast(message){
+    clearTimeout(toastTimer);
+
+    toast.textContent = message;
+    toast.classList.add("show");
+
+    setTimeout(() => {
+        toast.classList.remove("show");
+    }, 2500);
+}
+
 function processCSV(text) {
 
     const lines = text.split(/\r?\n/);
 
     if (lines.length < 2) {
-        alert("The file appears to be empty.");
+        showToast("The file appears to be empty.");
         return;
     }
 
@@ -75,12 +104,8 @@ function processCSV(text) {
         header.toLowerCase() === "variation"
     );
 
-    const skuIndex = headers.findIndex(header =>
-        header.toLowerCase() === "sku id"
-    );
-
     if (orderIdIndex === -1 || productNameIndex === -1) {
-        alert("Could not find the Order ID or Product Name columns.");
+        showToast("Invalid TikTok Shop CSV.");
         return;
     }
 
@@ -110,7 +135,7 @@ function processCSV(text) {
             ? columns[quantityIndex].trim()
             : "1";
 
-        const variation = skuIndex !== -1
+        const variation = variationIndex !== -1
             ? columns[variationIndex].trim()
             : "N/A";
 
@@ -179,9 +204,9 @@ function copyTableToClipboard() {
 
     navigator.clipboard.writeText(clipboardText)
         .then(function () {
-            alert("Data copied! Paste it into Google Sheets.");
+            showToast("Data copied to clipboard.");
         })
         .catch(function () {
-            alert("Failed to copy the data.");
+            showToast("Failed to copy the data.");
         });
 }

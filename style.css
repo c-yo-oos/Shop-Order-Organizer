@@ -239,3 +239,66 @@ tbody tr:hover{
     color: #6b7280;
     font-size: 14px;
 }
+
+.loading-screen{
+    position: fixed;
+    inset: 0;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background: rgba(255, 255, 255, .85);
+    backdrop-filter: blur(4px);
+    z-index: 999;
+}
+
+.loading-screen.show{
+    display: flex;
+}
+
+.loader{
+    width: 55px;
+    height: 55px;
+    border: 6px solid #e5e7eb;
+    border-top: 6px solid #fe2c55;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+.loading-screen p{
+    margin-top: 20px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #374151;
+}
+
+@keyframes spin{
+    from{
+        transform: rotate(0deg);
+    }
+
+    to{
+        transform: rotate(360deg);
+    }
+}
+
+.toast{
+    position: fixed;
+    right: 30px;
+    bottom: 30px;
+    background: #111827;
+    color: white;
+    padding: 14px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: .3s;
+    pointer-events: none;
+    z-index: 1000;
+}
+
+.toast.show{
+    opacity: 1;
+    transform: translateY(0);
+}
