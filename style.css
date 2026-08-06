@@ -1,3 +1,4 @@
+/* Page */
 body{
     font-family: "Inter", sans-serif;
     margin: 0;
@@ -8,11 +9,22 @@ body{
 
 .container{
     max-width: 950px;
-    margin: auto;
-    background: white;
+    margin: 0 auto;
+    background: #ffffff;
     padding: 40px;
     border-radius: 20px;
-    box-shadow: 0 15px 35px rgba(15, 23, 42, .08);
+    box-shadow: 0 12px 30px rgba(15, 23, 42, .08);
+}
+
+/* Header */
+.app-header{
+    margin-bottom: 40px;
+}
+
+.app-title{
+    display: flex;
+    align-items: center;
+    gap: 18px;
 }
 
 h1 {
@@ -20,4 +32,173 @@ h1 {
     color: #111827;
     font-size: 32px;
     font-weight: 700;
+}
+
+.subtitle{
+    margin-top: 6px;
+    color: #6b7280;
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+.instructions{
+    margin-top: 12px;
+    margin-bottom: 32px;
+    color: #6b7280;
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+/* Upload */
+.upload-section{
+    margin-bottom: 24px;
+}
+
+.file-input-zone{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    border: 2px dashed #d1d5db;
+    border-radius: 16px;
+
+    background: #fafafa;
+
+    padding: 50px 30px;
+    cursor: pointer;
+
+    transition: all .25s ease;
+
+    text-align: center;
+}
+
+.file-input-zone:hover{
+    border-color: #fe2c55;
+    background: #fff5f7;
+    transform: translateY(-2px);
+}
+
+.file-input-zone h2{
+    margin: 0;
+    font-size: 22px;
+    color: #111827;
+}
+
+.upload-subtitle{
+    margin-top: 10px;
+    margin-bottom: 8px;
+
+    color: #6b7280;
+
+    font-size: 15px;
+}
+
+.upload-note{
+    font-size: 13px;
+    color: #9ca3af;
+}
+
+/* Actions */
+.actions{
+    margin-bottom: 32px;
+}
+
+.btn{
+    display: none;
+    width: 100%;
+    padding: 16px 24px;
+    border: none;
+    border-radius: 12px;
+    background: #fe2c55;
+    color: white;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .2s ease;
+}
+
+.btn:hover{
+    background: #e6254c;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(254, 44, 85, .25);
+}
+
+.btn:active{
+    transform: translateY(0);
+}
+
+/* Orders Section */
+.orders-section{
+    margin-top: 40px;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    overflow: hidden;
+    background: white;
+}
+
+.orders-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px;
+    border-bottom: 1px solid #e5e7eb;
+    background: #ffffff;
+}
+
+.orders-header h2{
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+    color: #111827;
+}
+
+.orders-header p{
+    margin-top: 6px;
+    margin-bottom: 0;
+    font-size: 14px;
+    color: #6b7280;
+}
+
+.table-container{
+    overflow-x: auto;
+}
+
+table{
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+th{
+    background: #f8fafc;
+    color: #374151;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    padding: 16px;
+    text-align: left;
+
+    border-bottom: 2px solid #e5e7eb;
+}
+
+td{
+    padding: 16px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+tbody tr{
+    transition: background .2s;
+}
+
+tbody tr:hover{
+    background: #fff7f9;
+}
+
+.empty-state{
+    text-align: center;
+    color: #6b7280;
+    padding: 40px;
+    font-size: 15px;
 }

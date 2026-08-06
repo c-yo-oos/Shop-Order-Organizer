@@ -13,42 +13,79 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="container">
+        <!-- App Header -->
+        <div class="app-header">
+            <div class="app-title">
+                <div>
+                    <h1>TikTok Shop Order Organizer</h1>
 
-<div class="container">
-    <h1>TikTok Shop Order Organizer</h1>
-    <div class="instructions">
-        <strong>How to use:</strong> Go to TikTok Seller Center > Orders > Manage Orders. Export your unfulfilled orders as a CSV. Click below to upload that file, and it will format the Order ID and Product Name perfectly for your Google Sheet.
+                    <p class="subtitle">
+                        Convert your TikTok Seller CSV into a clean Google Sheets format.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Upload Area -->
+        <div class="upload-section">
+            <label class="file-input-zone" id="drop-zone">
+
+                <h2 id="file-text">
+                    Upload Your Order CSV
+                </h2>
+
+                <p class="upload-subtitle">
+                    Drag & drop your CSV here or click to browse
+                </p>
+
+                <span class="upload-note">
+                    CSV files only
+                </span>
+
+                <input type="file" id="csv-file" accept=".csv">
+            </label>
+        </div>
+
+        <!-- Copy Button -->
+        <div class="actions">
+
+            <button class="btn" id="copy-btn" onclick="copyTableToClipboard()">
+                Copy Data for Google Sheets
+            </button>
+        </div>
+
+        <!-- Orders Section -->
+        <div class="orders-section">
+            <div class="orders-header">
+                <div>
+                    <h2>Orders</h2>
+                    <p>Imported TikTok Shop order data.</p>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table id="output-table">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Product Name</th>
+                            <th>Quantity</th>
+                            <th>Variation (SKU)</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="table-body">
+                        <tr>
+                            <td colspan="4" class="empty-state">
+                                No data uploaded yet. Your formatted rows will appear here.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-
-    <!-- Upload Area -->
-    <label class="file-input-zone" id="drop-zone">
-        <span id="file-text">📄 Click here to upload or drag your TikTok Order CSV file</span>
-        <input type="file" id="csv-file" accept=".csv">
-    </label>
-
-    <!-- Copy Button -->
-    <button class="btn" id="copy-btn" onclick="copyTableToClipboard()">Copy Data for Google Sheets</button>
-
-    <!-- Output Table -->
-    <div style="overflow-x: auto;">
-        <table id="output-table">
-            <thead>
-                <tr>
-                    <th>Order ID</th>
-                    <th>Product Name</th>
-                    <th>Quantity</th>
-                    <th>Variation (SKU)</th>
-                </tr>
-            </thead>
-            <tbody id="table-body">
-                <tr>
-                    <td colspan="4" style="text-align: center; color: #86868b;">No data uploaded yet. Your formatted rows will appear here.</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
-
-    <script src="script.jss"></script>
+    <script src="script.js"></script>
 </body>
 </html>
