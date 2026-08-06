@@ -85,6 +85,16 @@ h1 {
     color: #111827;
 }
 
+.file-input-zone.success{
+    border-color: #22c55e;
+    background: #f0fdf4;
+}
+
+.file-input-zone.success:hover{
+    border-color: #16a34a;
+    background: #acfdf5;
+}
+
 .upload-subtitle{
     margin-top: 10px;
     margin-bottom: 8px;
@@ -105,7 +115,8 @@ h1 {
 }
 
 .btn{
-    display: none;
+    opacity: 0;
+    visibility: hidden;
     width: 100%;
     padding: 16px 24px;
     border: none;
@@ -115,7 +126,12 @@ h1 {
     font-size: 15px;
     font-weight: 600;
     cursor: pointer;
-    transition: all .2s ease;
+    transition: opacity .3s, transform .2s;
+}
+
+.btn.show{
+    opacity: 1;
+    visibility: visible;
 }
 
 .btn:hover{
@@ -201,4 +217,25 @@ tbody tr:hover{
     color: #6b7280;
     padding: 40px;
     font-size: 15px;
+}
+
+.empty-state-content{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 0;
+}
+
+.empty-state h3{
+    margin: 0;
+    color: #111827;
+    font-size: 18px;
+}
+
+.empty-state p{
+    margin-top: 8px;
+    margin-bottom: 0;
+    color: #6b7280;
+    font-size: 14px;
 }
