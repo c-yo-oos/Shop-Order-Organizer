@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>TikTok Shop Order Formatter</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>TikTok Shop Order Organizer</h1>
+    <div class="instructions">
+        <strong>How to use:</strong> Go to TikTok Seller Center > Orders > Manage Orders. Export your unfulfilled orders as a CSV. Click below to upload that file, and it will format the Order ID and Product Name perfectly for your Google Sheet.
+    </div>
+
+    <!-- Upload Area -->
+    <label class="file-input-zone" id="drop-zone">
+        <span id="file-text">📄 Click here to upload or drag your TikTok Order CSV file</span>
+        <input type="file" id="csv-file" accept=".csv">
+    </label>
+
+    <!-- Copy Button -->
+    <button class="btn" id="copy-btn" onclick="copyTableToClipboard()">Copy Data for Google Sheets</button>
+
+    <!-- Output Table -->
+    <div style="overflow-x: auto;">
+        <table id="output-table">
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Product Name</th>
+                    <th>Quantity</th>
+                    <th>Variation (SKU)</th>
+                </tr>
+            </thead>
+            <tbody id="table-body">
+                <tr>
+                    <td colspan="4" style="text-align: center; color: #86868b;">No data uploaded yet. Your formatted rows will appear here.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+    <script src="script.jss"></script>
+</body>
+</html>
