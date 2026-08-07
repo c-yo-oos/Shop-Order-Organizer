@@ -5,8 +5,18 @@ const copyBtn = document.getElementById("copy-btn");
 const dropZone = document.getElementById("drop-zone");
 const loadingScreen = document.getElementById("loading-screen");
 const toast = document.getElementById("toast");
+const orderCount = document.getElementById("order-count");
+const productCount = document.getElementById("product-count");
+const itemCount = document.getElementById("item-count");
+const searchInput = document.getElementById("search-input");
+
+const tableHeaders = document.querySelectorAll("#output-table th");
+const filterButtons = document.querySelectorAll(".filter-btn");
 
 let toastTimer;
+let sortColumn = -1;
+let sortAscending = true;
+let currentFilter = "all";
 
 fileInput.addEventListener("change", function (e) {
     const file = e.target.files[0];
@@ -58,6 +68,116 @@ function shortenProductName(productName) {
     return productName;
 }
 
+searchInput.addEventListener("input", function () {
+    searchOrders();
+});
+
+filterButtons.forEach(function(button){
+    button.addEventListener("click", function(){
+        filterButtons.forEach(function(btn){
+            btn.classList.remove("active");
+        })
+        button.classList.add("active");
+        currentFilter = button.dataset.filter;
+        searchOrders();
+    });
+});
+
+tableHeaders.forEach(function (header) {
+
+    header.addEventListener("click", function () {
+
+        const column = Number(header.dataset.column);
+
+        sortTable(column);
+
+    });
+
+});
+
+function searchOrders(){
+    const searchText = searchInput.value.toLowerCase();
+    const rows = document.querySelectorAll("#table-body tr");
+
+    rows.forEach(function(row){
+        const rowText = row.textContent.toLowerCase();
+        const option = row.cells[3].textContent.trim();
+
+        let matchesSearch = rowText.includes(searchText);
+
+        let matchesFilter =
+            currentFilter === "all" ||
+            option === currentFilter;
+
+        if(matchesSearch && matchesFilter){
+            row.style.display = "";
+        }
+        else{
+            row.style.display = "none";
+        }
+    });
+}
+
+function sortTable(column){
+    const rows = Array.from(tableBody.querySelectorAll("tr"));
+
+    rows.sort(function (a, b){
+        const textA = a.cells[column].textContent.trim().toLowerCase();
+        const textB = b.cells[column].textContent.trim().toLowerCase();
+
+        if(!isNaN(textA) && !isNaN(textB)){
+            return Number(textA) - Number(textB);
+        }
+        return textA.localeCompare(textB);
+    });
+
+    if(sortColumn === column){
+        sortAscending = !sortAscending;
+    }
+    else{
+        sortAscending = true;
+    }
+
+    sortColumn = column;
+
+    if(!sortAscending){
+        rows.reverse();
+    }
+    tableBody.innerHTML = "";
+    rows.forEach(function (row){
+        tableBody.appendChild(row);
+    });
+    updateSortIcons();
+}
+
+function updateSortIcons() {
+    tableHeaders.forEach(function (header) {
+        const column = Number(header.dataset.column);
+        header.classList.remove("active-sort");
+
+        let title = header.textContent
+            .replace(" ▲", "")
+            .replace(" ▼", "");
+
+        if (column === sortColumn) {
+            header.classList.add("active-sort");
+
+            if (sortAscending) {
+                header.textContent = title + " ▲";
+            }
+            else {
+                header.textContent = title + " ▼";
+            }
+
+        }
+        else {
+            header.textContent = title;
+        }
+
+    });
+
+}
+
 function showLoading(){
     loadingScreen.classList.add("show");
 }
@@ -72,7 +192,7 @@ function showToast(message){
     toast.textContent = message;
     toast.classList.add("show");
 
-    setTimeout(() => {
+    toastTimer = setTimeout(() => {
         toast.classList.remove("show");
     }, 2500);
 }
@@ -110,6 +230,9 @@ function processCSV(text) {
     }
 
     let rows = "";
+    let totalOrders = 0;
+    let totalItems = 0;
+    let uniqueProducts = [];
 
     for (let i = 1; i < lines.length; i++) {
 
@@ -139,6 +262,14 @@ function processCSV(text) {
             ? columns[variationIndex].trim()
             : "N/A";
 
+        totalOrders++;
+        totalItems += Number(quantity);
+
+        if (!uniqueProducts.includes(productName)){
+            uniqueProducts.push(productName);
+        }
+        
+            
         rows += `
             <tr>
                 <td><strong>${orderId}</strong></td>
@@ -150,6 +281,12 @@ function processCSV(text) {
     }
 
     tableBody.innerHTML = rows;
+
+    searchOrders();
+
+    orderCount.textContent = totalOrders;
+    productCount.textContent = uniqueProducts.length;
+    itemCount.textContent = totalItems;
 
     copyBtn.classList.add("show");
 }

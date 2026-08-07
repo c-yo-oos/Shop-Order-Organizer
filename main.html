@@ -55,6 +55,24 @@
             </button>
         </div>
 
+        <!-- Statistics -->
+        <div class="stats">
+            <div class="stat-card">
+                <h3 id="order-count">0</h3>
+                <p>Orders</p>
+            </div>
+
+            <div class="stat-card">
+                <h3 id="product-count">0</h3>
+                <p>Products</p>
+            </div>
+
+            <div class="stat-card">
+                <h3 id="item-count">0</h3>
+                <p>Total Items</p>
+            </div>
+        </div>
+
         <!-- Orders Section -->
         <div class="orders-section">
             <div class="orders-header">
@@ -62,16 +80,28 @@
                     <h2>Orders</h2>
                     <p>Imported TikTok Shop order data.</p>
                 </div>
+                <input 
+                    type="text"
+                    id="search-input"
+                    class="search-input"
+                    placeholder="Search orders..."
+                >
+            </div>
+
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="Solo">Solo</button>
+                <button class="filter-btn" data-filter="B1T1">B1T1</button>
             </div>
 
             <div class="table-container">
                 <table id="output-table">
                     <thead>
                         <tr>
-                            <th>Order ID</th>
-                            <th>Product Name</th>
-                            <th>Quantity</th>
-                            <th>Option</th>
+                            <th data-column="0">Order ID</th>
+                            <th data-column="1">Product Name</th>
+                            <th data-column="2">Quantity</th>
+                            <th data-column="3">Option</th>
                         </tr>
                     </thead>
 
