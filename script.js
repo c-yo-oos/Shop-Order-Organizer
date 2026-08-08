@@ -9,6 +9,10 @@ const orderCount = document.getElementById("order-count");
 const productCount = document.getElementById("product-count");
 const itemCount = document.getElementById("item-count");
 const searchInput = document.getElementById("search-input");
+const noResults = document.getElementById("no-results");
+const themeBtn = document.getElementById("theme-btn");
+
+themeBtn.addEventListener("click", toggleTheme);
 
 const tableHeaders = document.querySelectorAll("#output-table th");
 const filterButtons = document.querySelectorAll(".filter-btn");
@@ -18,10 +22,8 @@ let sortColumn = -1;
 let sortAscending = true;
 let currentFilter = "all";
 
-fileInput.addEventListener("change", function (e) {
-    const file = e.target.files[0];
-
-    if (!file) {
+function loadCSV(file){
+    if(!file){
         return;
     }
 
@@ -32,16 +34,40 @@ fileInput.addEventListener("change", function (e) {
 
     const reader = new FileReader();
 
-    reader.onload = function (e) {
+    reader.onload = function (e){
         processCSV(e.target.result);
-        setTimeout(() => {
+        setTimeout(function(){
             hideLoading();
             showToast("Orders imported successfully.");
-        }, 300);
-    };
 
+        },300);
+
+    };
     reader.readAsText(file);
+}
+
+fileInput.addEventListener("change", function (e){
+    loadCSV(e.target.files[0]);
 });
+
+dropZone.addEventListener("dragover", function (e){
+    e.preventDefault();
+});
+
+dropZone.addEventListener("dragenter", function (){
+    dropZone.classList.add("dragging");
+});
+
+dropZone.addEventListener("dragleave", function (){
+    dropZone.classList.remove("dragging");
+});
+
+dropZone.addEventListener("drop", function (e){
+    e.preventDefault();
+    dropZone.classList.remove("dragging");
+
+    loadCSV(e.dataTransfer.files[0]);
+})
 
 function shortenProductName(productName) {
     const products = {
@@ -99,9 +125,11 @@ function searchOrders(){
     const searchText = searchInput.value.toLowerCase();
     const rows = document.querySelectorAll("#table-body tr");
 
+    let visibleRows = 0;
+
     rows.forEach(function(row){
         const rowText = row.textContent.toLowerCase();
-        const option = row.cells[3].textContent.trim();
+        const option = row.cells[4].textContent.trim();
 
         let matchesSearch = rowText.includes(searchText);
 
@@ -111,11 +139,19 @@ function searchOrders(){
 
         if(matchesSearch && matchesFilter){
             row.style.display = "";
+            visibleRows++;
         }
         else{
             row.style.display = "none";
         }
     });
+
+    if(visibleRows === 0){
+        noResults.classList.add("show");
+    }
+    else{
+        noResults.classList.remove("show");
+    }
 }
 
 function sortTable(column){
@@ -148,6 +184,7 @@ function sortTable(column){
         tableBody.appendChild(row);
     });
     updateSortIcons();
+    searchOrders();
 }
 
 function updateSortIcons() {
@@ -208,6 +245,10 @@ function processCSV(text) {
 
     const headers = parseCSVLine(lines[0]);
 
+    const orderDateIndex = headers.findIndex(header =>
+        header.toLowerCase().includes("created time")
+    );
+
     const orderIdIndex = headers.findIndex(header =>
         header.toLowerCase().includes("order id")
     );
@@ -242,7 +283,7 @@ function processCSV(text) {
 
         const columns = parseCSVLine(lines[i]);
 
-        if (columns.length <= Math.max(orderIdIndex, productNameIndex)) {
+        if (columns.length <= Math.max(orderDateIndex, orderIdIndex, productNameIndex)) {
             continue;
         }
 
@@ -253,6 +294,10 @@ function processCSV(text) {
         const productName = shortenProductName(
         columns[productNameIndex].trim()
         );
+
+        const orderDate = orderDateIndex !== -1
+            ? columns[orderDateIndex].trim()
+            : "N/A";
 
         const quantity = quantityIndex !== -1
             ? columns[quantityIndex].trim()
@@ -272,6 +317,7 @@ function processCSV(text) {
             
         rows += `
             <tr>
+                <td>${orderDate}</td>
                 <td><strong>${orderId}</strong></td>
                 <td>${productName}</td>
                 <td>${quantity}</td>
@@ -346,4 +392,24 @@ function copyTableToClipboard() {
         .catch(function () {
             showToast("Failed to copy the data.");
         });
+}
+
+function toggleTheme(){
+    document.body.classList.toggle("dark");
+
+    if(document.body.classList.contains("dark")){
+        themeBtn.textContent = "☀ Light Mode";
+    }
+    else{
+        themeBtn.textContent = "🌙 Dark Mode";
+    }
+    localStorage.setItem(
+        "theme",
+        document.body.classList.contains("dark")
+    );
+}
+
+if(localStorage.getItem("theme") === "true"){
+    document.body.classList.add("dark");
+    themeBtn.textContent = "☀ Light Mode";
 }
