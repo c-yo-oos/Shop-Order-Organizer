@@ -13,7 +13,20 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
+    <div class="sidebar">
+        <h2>Shop Tools</h2>
+
+        <button class="sidebar-btn active" id="shop-btn">
+            Shop Organizer
+        </button>
+
+        <button class="sidebar-btn" id="sheet-btn">
+            Spreadsheet
+        </button>
+
+    </div>
+
+    <div class="container" id="shop-page">
         <!-- App Header -->
         <div class="app-header">
             <div class="app-title">
@@ -56,6 +69,11 @@
             <button class="btn" id="copy-btn" onclick="copyTableToClipboard()">
                 Copy Data for Google Sheets
             </button>
+
+            <button class="spreadsheet-btn" id="send-sheet-btn">
+                Send to Spreadsheet
+            </button>
+
         </div>
 
         <!-- Statistics -->
@@ -128,13 +146,101 @@
             </div>
         </div>
     </div>
+    <div class="container spreadsheet-page" id="sheet-page">
+
+    <div class="sheet-header">
+        <div>
+            <h1>Spreadsheet</h1>
+            <p>Organize and calculate your shop data.</p>
+        </div>
+    </div>
+
+    <div class="spreadsheet-summary">
+
+        <div class="summary-card done">
+            <div class="summary-title">Done</div>
+            <div class="summary-value" id="summary-done">0</div>
+        </div>
+
+        <div class="summary-card processing">
+            <div class="summary-title">Processing</div>
+            <div class="summary-value" id="summary-processing">0</div>
+        </div>
+
+        <div class="summary-card delivered">
+            <div class="summary-title">Delivered</div>
+            <div class="summary-value" id="summary-delivered">0</div>
+        </div>
+
+        <div class="summary-card return">
+            <div class="summary-title">Return/Refund</div>
+            <div class="summary-value" id="summary-return">0</div>
+        </div>
+
+        <div class="summary-card">
+            <div class="summary-title">Unit Price</div>
+            <div class="summary-value" id="summary-unit">₱0.00</div>
+        </div>
+
+        <div class="summary-card">
+            <div class="summary-title">Deduction</div>
+            <div class="summary-value" id="summary-deduction">₱0.00</div>
+        </div>
+
+        <div class="summary-card">
+            <div class="summary-title">Retail</div>
+            <div class="summary-value" id="summary-retail">₱0.00</div>
+        </div>
+
+        <div class="summary-card">
+            <div class="summary-title">Profit</div>
+            <div class="summary-value" id="summary-profit">₱0.00</div>
+        </div>
+
+        <div class="summary-card">
+            <div class="summary-title">Orders</div>
+            <div class="summary-value" id="summary-orders">0</div>
+        </div>
+
+    </div>
+
+
+    <!-- Spreadsheet Table -->
+
+    <div class="spreadsheet-container">
+
+        <table id="spreadsheet">
+
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Order ID</th>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>Deduction</th>
+                    <th>Retail Price</th>
+                    <th>Profit</th>
+                    <th>Conclude</th>
+                </tr>
+            </thead>
+
+            <tbody id="spreadsheet-body">
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
 
     <div id="loading-screen" class="loading-screen">
         <div class="loader"></div>
         <p>Processing CSV...</p>
     </div>
-
     <div id="toast" class="toast"></div>
+
     <script src="script.js"></script>
+    <script src="spreadsheet.js"></script>
 </body>
 </html>
